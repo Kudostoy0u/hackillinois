@@ -1,0 +1,131 @@
+/* Event detail dialog */
+
+.modal-backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background: rgb(4 45 56 / 58%);
+  backdrop-filter: blur(9px);
+}
+
+.event-modal {
+  position: relative;
+  width: min(610px, 100%);
+  max-height: calc(100vh - 48px);
+  padding: 35px;
+  overflow-y: auto;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 27px;
+  background: #fffbed;
+  box-shadow: 0 35px 90px rgb(0 34 45 / 34%);
+}
+
+.event-modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 8px;
+  background: var(--event-color);
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(23 58 69 / 9%);
+  border-radius: 50%;
+  background: rgb(23 58 69 / 5%);
+  color: #31555d;
+  cursor: pointer;
+}
+
+.modal-category {
+  color: var(--event-color);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.event-modal h2 {
+  max-width: 500px;
+  margin: 10px 40px 6px 0;
+  color: var(--ink);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.modal-sponsor {
+  margin: 0 0 24px;
+  color: #63777a;
+  font-size: 0.85rem;
+}
+
+.modal-facts {
+  padding: 17px 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  border-top: 1px solid #dedac8;
+  border-bottom: 1px solid #dedac8;
+}
+
+.modal-facts > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.modal-facts > div > svg {
+  flex: 0 0 auto;
+  color: var(--event-color);
+  font-size: 1.1rem;
+}
+
+.modal-facts span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modal-facts small,
+.modal-description > span {
+  color: #758484;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.modal-facts strong {
+  overflow: hidden;
+  color: #2e4c52;
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-description {
+  padding: 24px 0 10px;
+}
+
+.modal-description p {
+  margin: 8px 0 0;
+  color: #405c62;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+

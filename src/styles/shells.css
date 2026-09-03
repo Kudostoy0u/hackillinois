@@ -1,0 +1,43 @@
+/* Draggable beach shells */
+
+.beach-shells {
+  position: fixed;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shell {
+  position: absolute;
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+  font-size: 1.35rem;
+  filter: drop-shadow(0 3px 2px rgb(76 48 28 / 15%));
+  pointer-events: auto;
+  user-select: none;
+}
+
+.shell:active {
+  cursor: grabbing;
+}
+
+.shell-1 {
+  color: #e97876;
+}
+
+.shell-2 {
+  color: #a06446;
+}
+
+.shell-3 {
+  color: #f3a958;
+}
+
+

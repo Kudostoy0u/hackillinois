@@ -1,0 +1,64 @@
+/* Global tokens and element defaults */
+
+:root {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: #173a45;
+  background: #f1d49a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #173a45;
+  --deep-water: #075d78;
+  --water: #159db6;
+  --foam: #f3fff8;
+  --sand: #f1d49a;
+  --coral: #ef6f51;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid #ffbe57;
+  outline-offset: 3px;
+}
+
+a {
+  color: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+

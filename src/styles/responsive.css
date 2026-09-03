@@ -1,0 +1,263 @@
+/* Animations, responsive layouts, and motion preferences */
+
+@keyframes skeleton {
+  to { background-position: -120% 0; }
+}
+
+@media (max-width: 980px) {
+  .schedule-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .schedule-sidebar {
+    position: relative;
+    top: auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: stretch;
+  }
+
+  .day-tabs {
+    flex-direction: row;
+  }
+
+  .day-tabs button {
+    width: 100%;
+    min-height: 85px;
+    padding: 39px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: end;
+  }
+
+  .day-tabs button > span {
+    top: 9px;
+    left: 10px;
+    width: auto;
+    height: auto;
+    aspect-ratio: auto;
+    background: transparent;
+  }
+
+  .day-tabs button.active > span {
+    padding: 3px 6px;
+    border-radius: 999px;
+  }
+
+  .day-tabs small {
+    grid-column: auto;
+  }
+
+  .legend-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    padding: 10px 12px 0;
+  }
+
+  .header-inner {
+    min-height: 64px;
+    padding: 7px 10px 7px 14px;
+    border-radius: 18px;
+  }
+
+  .brand img {
+    width: 115px;
+  }
+
+  .main-nav {
+    gap: 0;
+  }
+
+  .main-nav a {
+    padding: 9px 8px;
+    font-size: 0.72rem;
+  }
+
+  .schedule-main {
+    width: min(100% - 24px, 600px);
+    padding: 43px 0 90px;
+  }
+
+  .schedule-intro {
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  .schedule-intro h1 {
+    font-size: clamp(3.25rem, 18vw, 5rem);
+  }
+
+  .schedule-intro p {
+    font-size: 0.92rem;
+  }
+
+  .search-box {
+    width: 100%;
+    margin-top: 22px;
+  }
+
+  .schedule-sidebar {
+    display: flex;
+  }
+
+  .side-panel {
+    padding: 15px;
+    border-radius: 18px;
+  }
+
+  .legend-panel {
+    display: none;
+  }
+
+  .day-tabs {
+    gap: 5px;
+  }
+
+  .day-tabs button {
+    min-height: 74px;
+    padding: 31px 8px 8px;
+  }
+
+  .day-tabs strong {
+    font-size: 0.82rem;
+  }
+
+  .day-tabs small {
+    font-size: 0.68rem;
+  }
+
+  .events-section {
+    padding: 18px 10px 14px;
+    border-radius: 22px;
+  }
+
+  .events-heading {
+    padding: 0 6px;
+  }
+
+  .event-card {
+    min-height: 123px;
+    padding: 15px 12px 15px 20px;
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 12px;
+    border-radius: 16px;
+  }
+
+  .event-time {
+    font-size: 0.85rem;
+  }
+
+  .event-card-body > strong {
+    font-size: 1.01rem;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .event-meta {
+    display: block;
+  }
+
+  .event-meta > span:first-child {
+    max-width: 100%;
+  }
+
+  .event-meta > span:last-child,
+  .details-cue,
+  .sponsor {
+    display: none;
+  }
+
+  .modal-backdrop {
+    padding: 12px;
+    align-items: end;
+  }
+
+  .event-modal {
+    max-height: 88vh;
+    padding: 29px 22px 24px;
+    border-radius: 24px 24px 16px 16px;
+  }
+
+  .modal-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .credits-main {
+    width: calc(100% - 24px);
+    padding: 44px 0 80px;
+  }
+
+  .credits-card {
+    padding: 35px 24px;
+  }
+
+  .postcard-stamp {
+    top: 22px;
+    right: 22px;
+    width: 57px;
+    height: 66px;
+  }
+
+  .back-link {
+    margin-bottom: 70px;
+  }
+
+  .credits-grid {
+    grid-template-columns: 1fr;
+    gap: 19px;
+  }
+
+}
+
+@media (max-width: 520px) {
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 9px 10px 6px;
+  }
+
+  .brand {
+    width: 100%;
+    padding-left: 4px;
+  }
+
+  .brand img {
+    width: 104px;
+  }
+
+  .main-nav {
+    width: 100%;
+    padding-top: 5px;
+    justify-content: space-between;
+    border-top: 1px solid rgb(23 58 69 / 8%);
+  }
+
+  .main-nav a {
+    flex: 1;
+    padding: 7px 4px;
+    text-align: center;
+    font-size: 0.67rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
