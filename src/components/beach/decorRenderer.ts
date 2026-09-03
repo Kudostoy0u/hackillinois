@@ -4,10 +4,18 @@ import {
   drawBeachChair,
   drawDrink,
   drawSandcastle,
+  drawShell,
   drawTowel,
   drawUmbrella,
 } from './drawing'
-import { BEACH_BALLS, BEACH_SETUPS, DRINKS, SANDCASTLES, TOWELS } from './sceneLayout'
+import {
+  BEACH_BALLS,
+  BEACH_SETUPS,
+  DRINKS,
+  SANDCASTLES,
+  SHELLS,
+  TOWELS,
+} from './sceneLayout'
 
 const CHAIR_COLORS = ['#53a7ba', '#e77a61', '#f1c45c']
 
@@ -88,6 +96,13 @@ export function drawBeachDecor(
     const position = dragLayer.place(id, width * ball.x, height * ball.y)
     drawBeachBall(context, position.x, position.y, ball.radius)
     dragLayer.register({ id, ...position, radius: ball.radius * 1.15 })
+  })
+
+  SHELLS.forEach((shell, index) => {
+    const id = `shell-${index}`
+    const position = dragLayer.place(id, width * shell.x, height * shell.y)
+    drawShell(context, position.x, position.y, shell.scale, shell.color, shell.rotation)
+    dragLayer.register({ id, ...position, radius: Math.max(10, shell.scale * 15) })
   })
 
   SANDCASTLES.forEach((castle, index) => {

@@ -36,6 +36,14 @@ export type DrinkPlacement = {
   color: string
 }
 
+export type ShellPlacement = {
+  x: number
+  y: number
+  scale: number
+  color: string
+  rotation: number
+}
+
 // Layout coordinates are normalized viewport positions from 0 to 1.
 export const CRAB_SEEDS: CrabSeed[] = [
   {
@@ -183,6 +191,17 @@ export const BEACH_BALLS = [
   { x: 0.94, y: 0.59, radius: 11 },
   { x: 0.59, y: 0.51, radius: 8 },
   { x: 0.73, y: 0.85, radius: 9 },
+]
+
+export const SHELLS: ShellPlacement[] = [
+  { x: 0.49, y: 0.68, scale: 1, color: '#e97876', rotation: -0.31 },
+  { x: 0.83, y: 0.9, scale: 0.92, color: '#a06446', rotation: 0.14 },
+  { x: 0.96, y: 0.78, scale: 0.72, color: '#f3a958', rotation: 0.61 },
+  { x: 0.972, y: 0.39, scale: 0.82, color: '#e9cda5', rotation: -0.21 },
+  { x: 0.948, y: 0.46, scale: 0.72, color: '#a06446', rotation: 0.31 },
+  { x: 0.962, y: 0.6, scale: 0.68, color: '#e97876', rotation: 0.19 },
+  { x: 0.981, y: 0.69, scale: 0.74, color: '#e9cda5', rotation: 0.45 },
+  { x: 0.951, y: 0.86, scale: 0.66, color: '#f3a958', rotation: -0.33 },
 ]
 
 export const SANDCASTLES = [

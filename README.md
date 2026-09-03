@@ -10,7 +10,7 @@ An ocean-themed schedule experience for HackIllinois. The site reads event data 
 | TypeScript 5.8 | Static types for events, UI state, and canvas systems |
 | Vite 7 | Development server, API proxy, and production bundling |
 | React Router 7 | Schedule and credits routes |
-| Framer Motion 12 | Modal, credits, and shell motion values |
+| Framer Motion 12 | Modal, credits, and ripple animations |
 | React Icons 5 | Interface iconography |
 | Canvas 2D | Ocean, shoreline, beach decor, birds, and crab rendering |
 | CSS | Responsive layout, visual styling, and lightweight transitions |
@@ -81,9 +81,7 @@ npm run preview  # Preview the production bundle locally
     │       ├── sceneLayout.ts         # Named decor placements and crab route data
     │       ├── canvasDragLayer.ts     # Hit testing, bounds, offsets, and obstacles
     │       ├── crabController.ts      # Crab steering, gait, pauses, and route updates
-    │       ├── pathfinding.ts         # A* pathfinding and route simplification
-    │       ├── ShellToss.tsx          # Draggable shell definitions and markup
-    │       └── useShellPhysics.ts     # Shell drag velocity and surface glide behavior
+    │       └── pathfinding.ts         # A* pathfinding and route simplification
     ├── utils
     │   ├── eventFilters.ts          # Pure day, category, and text filtering
     │   └── eventFormatters.ts       # Event category and date/time formatting
@@ -96,7 +94,6 @@ npm run preview  # Preview the production bundle locally
         ├── schedule-layout.css      # Page heading, search, and schedule grid
         ├── schedule-sidebar.css     # Day and filter panels
         ├── event-cards.css          # Event panel, cards, and title sweep
-        ├── shells.css               # DOM shell appearance and drag states
         ├── modal.css                # Event modal and backdrop
         ├── credits.css              # Credits postcard page
         └── responsive.css           # Tablet, mobile, and reduced-motion rules
@@ -139,7 +136,7 @@ The environment uses a full-viewport Canvas 2D layer. `OceanCanvas` owns only li
 Each frame is composed in this order:
 
 1. `environmentRenderer` draws the sky, sand, ocean, shoreline, and waves.
-2. `decorRenderer` draws umbrellas, chairs, towels, drinks, balls, shells, and fixed sandcastles.
+2. `decorRenderer` draws and registers umbrellas, chairs, towels, drinks, balls, shells, and fixed sandcastles.
 3. `crabController` updates and draws the crab.
 4. `environmentRenderer` draws birds above the scene.
 
@@ -147,7 +144,7 @@ Each frame is composed in this order:
 
 ### Shared shoreline geometry
 
-`beachGeometry.ts` is the single source of truth for the horizon and shoreline. Environment rendering, ripple detection, drag bounds, shell physics, and crab pathfinding all use the same geometry helpers, so visual and interactive boundaries agree.
+`beachGeometry.ts` is the single source of truth for the horizon and shoreline. Environment rendering, ripple detection, drag bounds, and crab pathfinding all use the same geometry helpers, so visual and interactive boundaries agree.
 
 ### Dragging and obstacles
 
@@ -161,11 +158,9 @@ While decor is being dragged, crab motion pauses. Once the drag ends, the crab d
 
 `pathfinding.ts` uses A* over a normalized grid. Cells in the ocean, near the shoreline, outside the beach bounds, or inside registered obstacles are not walkable. The resulting grid path is simplified into longer unobstructed segments before animation.
 
-### Shell physics and ripples
+### Shells and ripples
 
-DOM-based shells use pointer capture for stable dragging. `useShellPhysics` records drag velocity, applies surface-specific damping after release, keeps shells below the horizon and inside the viewport, and creates a splash when a shell enters the water.
-
-`useRipples` handles environmental pointer effects separately: moving over water produces ripples, while sand requires the pointer to be pressed. Ripple records expire automatically and are rendered by `CoastalScene`.
+Shells use the same canvas drag layer as the other beach decor. `useRipples` handles environmental pointer effects: moving over water produces ripples, while sand requires the pointer to be pressed. Ripple records expire automatically and are rendered by `CoastalScene`.
 
 ## Styling organization
 

@@ -55,5 +55,5 @@ export function useRipples() {
     }
   }, [addRipple])
 
-  return { ripples, addRipple }
+  return { ripples }
 }

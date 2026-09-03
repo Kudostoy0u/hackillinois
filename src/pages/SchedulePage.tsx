@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { FiSearch, FiX } from 'react-icons/fi'
 import { Header } from '../components/Header'
 import { CoastalScene } from '../components/beach/CoastalScene'
-import { ShellToss } from '../components/beach/ShellToss'
 import { EventsPanel } from '../components/schedule/EventsPanel'
 import { EventModal } from '../components/schedule/EventModal'
 import { ScheduleSidebar } from '../components/schedule/ScheduleSidebar'
@@ -14,7 +13,7 @@ import { dayLabel } from '../utils/eventFormatters'
 
 export function SchedulePage() {
   const { events, status } = useEvents()
-  const { ripples, addRipple } = useRipples()
+  const { ripples } = useRipples()
   const [selectedDay, setSelectedDay] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
   const [query, setQuery] = useState('')
@@ -103,7 +102,6 @@ export function SchedulePage() {
         </div>
       </main>
 
-      <ShellToss onSplash={addRipple} />
       <EventModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
     </div>
   )

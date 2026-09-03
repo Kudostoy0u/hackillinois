@@ -283,6 +283,47 @@ export function drawBeachBall(context: CanvasRenderingContext2D, x: number, y: n
   context.restore()
 }
 
+export function drawShell(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  scale: number,
+  color: string,
+  rotation: number,
+) {
+  context.save()
+  context.translate(x, y)
+  context.rotate(rotation)
+  context.scale(scale, scale)
+
+  context.fillStyle = 'rgba(75, 49, 29, 0.15)'
+  context.beginPath()
+  context.ellipse(3, 5, 13, 6, 0.18, 0, Math.PI * 2)
+  context.fill()
+
+  context.fillStyle = color
+  context.strokeStyle = 'rgba(112, 66, 48, 0.35)'
+  context.lineWidth = 1.2
+  context.beginPath()
+  context.moveTo(-11, 5)
+  context.bezierCurveTo(-12, -7, -6, -13, 0, -9)
+  context.bezierCurveTo(6, -13, 12, -7, 11, 5)
+  context.quadraticCurveTo(0, 11, -11, 5)
+  context.closePath()
+  context.fill()
+  context.stroke()
+
+  context.strokeStyle = 'rgba(255, 239, 211, 0.65)'
+  context.lineWidth = 1
+  for (const rib of [-7, -3.5, 0, 3.5, 7]) {
+    context.beginPath()
+    context.moveTo(0, -8)
+    context.lineTo(rib, 5)
+    context.stroke()
+  }
+  context.restore()
+}
+
 export function drawSeagull(
   context: CanvasRenderingContext2D,
   x: number,
