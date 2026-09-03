@@ -1,6 +1,13 @@
 import type { CanvasDragLayer } from './canvasDragLayer'
 import { drawCrab } from './drawing'
-import { findCrabPath, type CrabPoint } from './pathfinding'
+import {
+  findCrabPath,
+  findNearestClearPosition,
+  isCrabPositionClear,
+  isCrabSegmentClear,
+  type CrabObstacle,
+  type CrabPoint,
+} from './pathfinding'
 import { CRAB_DESTINATIONS, CRAB_SEEDS, type CrabSeed } from './sceneLayout'
 
 type CrabAgent = CrabSeed & {
@@ -23,12 +30,33 @@ export function createCrabController() {
   }))
   let lastFrameTime = 0
 
+  const resetRoute = (crab: CrabAgent) => {
+    crab.path = []
+    crab.waypoint = 0
+  }
+
   const clearRoutes = (pauseUntil: number) => {
     agents.forEach((crab) => {
-      crab.path = []
-      crab.waypoint = 0
+      resetRoute(crab)
       crab.pauseUntil = pauseUntil
     })
+  }
+
+  const planRoute = (
+    crab: CrabAgent,
+    crabIndex: number,
+    width: number,
+    height: number,
+    obstacles: CrabObstacle[],
+  ) => {
+    const territory = CRAB_DESTINATIONS[crabIndex]
+    const destination = territory[crab.destinationCursor % territory.length]
+    crab.gait =
+      (crab.destinationCursor + crabIndex) % 3 === 1 ? 'forward' : 'sideways'
+    crab.destinationCursor += 1
+    crab.path = findCrabPath(crab, destination, width, height, obstacles)
+    crab.waypoint = crab.path.length > 1 ? 1 : 0
+    return crab.path.length > 1
   }
 
   return {
@@ -39,7 +67,7 @@ export function createCrabController() {
     },
 
     resumeAfterDecorDrag(time: number) {
-      clearRoutes(time + 250)
+      clearRoutes(time + 80)
     },
 
     draw(
@@ -55,46 +83,72 @@ export function createCrabController() {
 
       agents.forEach((crab, crabIndex) => {
         if (!reducedMotion && time >= crab.pauseUntil) {
-          if (!crab.path.length || crab.waypoint >= crab.path.length) {
-            const territory = CRAB_DESTINATIONS[crabIndex]
-            const destination = territory[crab.destinationCursor % territory.length]
-            crab.gait =
-              (crab.destinationCursor + crabIndex) % 3 === 1 ? 'forward' : 'sideways'
-            crab.destinationCursor += 1
-            const obstacles = dragLayer.getObstacles(width, height, `crab-${crabIndex}`)
-            crab.path = findCrabPath(crab, destination, width, height, obstacles)
-            crab.waypoint = crab.path.length > 1 ? 1 : 0
-            if (crab.path.length < 2) crab.pauseUntil = time + 900
+          const obstacles = dragLayer.getObstacles(width, height, `crab-${crabIndex}`)
+          let canMove = true
+
+          if (!isCrabPositionClear(crab, width, height, obstacles)) {
+            const safePosition = findNearestClearPosition(crab, width, height, obstacles)
+            if (safePosition) {
+              crab.x = safePosition.x
+              crab.y = safePosition.y
+              resetRoute(crab)
+            } else {
+              resetRoute(crab)
+              crab.pauseUntil = time + 180
+              canMove = false
+            }
           }
 
-          const waypoint = crab.path[crab.waypoint]
-          if (waypoint) {
-            const deltaX = (waypoint.x - crab.x) * width
-            const deltaY = (waypoint.y - crab.y) * height
-            const distance = Math.hypot(deltaX, deltaY)
+          if (canMove) {
+            const waypoint = crab.path[crab.waypoint]
+            if (
+              waypoint &&
+              !isCrabSegmentClear(crab, waypoint, width, height, obstacles)
+            ) {
+              resetRoute(crab)
+            }
 
-            if (distance < 4) {
-              crab.x = waypoint.x
-              crab.y = waypoint.y
-              crab.waypoint += 1
-              if (crab.waypoint >= crab.path.length) {
-                crab.path = []
-                crab.pauseUntil = time + 650 + crabIndex * 240
+            if (!crab.path.length || crab.waypoint >= crab.path.length) {
+              const routeFound = planRoute(crab, crabIndex, width, height, obstacles)
+              if (!routeFound) crab.pauseUntil = time + 180
+            }
+
+            const nextWaypoint = crab.path[crab.waypoint]
+            if (nextWaypoint) {
+              const deltaX = (nextWaypoint.x - crab.x) * width
+              const deltaY = (nextWaypoint.y - crab.y) * height
+              const distance = Math.hypot(deltaX, deltaY)
+
+              if (distance < 4) {
+                crab.x = nextWaypoint.x
+                crab.y = nextWaypoint.y
+                crab.waypoint += 1
+                if (crab.waypoint >= crab.path.length) {
+                  resetRoute(crab)
+                }
+              } else {
+                const travelHeading = Math.atan2(deltaY, deltaX)
+                const targetHeading = uprightAngle(
+                  crab.gait === 'forward' ? travelHeading + Math.PI / 2 : travelHeading,
+                )
+                const turn = Math.atan2(
+                  Math.sin(targetHeading - crab.heading),
+                  Math.cos(targetHeading - crab.heading),
+                )
+                crab.heading += turn * Math.min(1, delta * 5.5)
+                const step = Math.min(distance, crab.speed * delta)
+                const nextPosition = {
+                  x: crab.x + (deltaX / distance / width) * step,
+                  y: crab.y + (deltaY / distance / height) * step,
+                }
+                if (isCrabPositionClear(nextPosition, width, height, obstacles)) {
+                  crab.x = nextPosition.x
+                  crab.y = nextPosition.y
+                  crab.walkPhase += step * 0.28
+                } else {
+                  resetRoute(crab)
+                }
               }
-            } else {
-              const travelHeading = Math.atan2(deltaY, deltaX)
-              const targetHeading = uprightAngle(
-                crab.gait === 'forward' ? travelHeading + Math.PI / 2 : travelHeading,
-              )
-              const turn = Math.atan2(
-                Math.sin(targetHeading - crab.heading),
-                Math.cos(targetHeading - crab.heading),
-              )
-              crab.heading += turn * Math.min(1, delta * 5.5)
-              const step = Math.min(distance, crab.speed * delta)
-              crab.x += (deltaX / distance / width) * step
-              crab.y += (deltaY / distance / height) * step
-              crab.walkPhase += step * 0.28
             }
           }
         }
@@ -115,13 +169,12 @@ export function createCrabController() {
           onMove: (point) => {
             crab.x = point.x / width
             crab.y = point.y / height
-            crab.path = []
-            crab.waypoint = 0
+            resetRoute(crab)
             crab.pauseUntil = Number.POSITIVE_INFINITY
           },
           onEnd: () => {
-            crab.path = []
-            crab.pauseUntil = performance.now() + 650
+            resetRoute(crab)
+            crab.pauseUntil = performance.now() + 80
           },
         })
       })

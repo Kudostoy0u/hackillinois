@@ -156,7 +156,7 @@ While decor is being dragged, crab motion pauses. Once the drag ends, the crab d
 
 `crabController.ts` owns the crab's mutable movement state. It chooses destinations from `sceneLayout.ts`, requests routes from `pathfinding.ts`, smoothly steers between waypoints, alternates forward and lateral gaits, and normalizes its angle so it never appears upside down.
 
-`pathfinding.ts` uses A* over a normalized grid. Cells in the ocean, near the shoreline, outside the beach bounds, or inside registered obstacles are not walkable. The resulting grid path is simplified into longer unobstructed segments before animation.
+`pathfinding.ts` uses A* over a normalized grid. Cells in the ocean, near the shoreline, outside the beach bounds, or inside registered obstacles are not walkable. Diagonal moves cannot cut across blocked corners, and continuous segment checks keep simplified routes outside every obstacle. If a destination is unreachable, the crab walks toward the farthest reachable point instead of freezing.
 
 ### Shells and ripples
 
