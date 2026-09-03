@@ -61,7 +61,11 @@ export function SchedulePage() {
             <h1>Catch the next wave.</h1>
             <p>Three days of building, learning, and finding your crew.</p>
           </div>
-          <label className="search-box">
+          <label
+            className={`search-box${eventsCollapsed ? ' search-box-hidden' : ''}`}
+            aria-hidden={eventsCollapsed}
+            inert={eventsCollapsed}
+          >
             <FiSearch aria-hidden="true" />
             <span className="sr-only">Search schedule</span>
             <input

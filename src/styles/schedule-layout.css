@@ -69,6 +69,15 @@
   box-shadow: 0 12px 28px rgb(80 80 41 / 10%);
   backdrop-filter: blur(14px);
   color: #56727a;
+  visibility: visible;
+  transition: opacity 0.28s ease-out, visibility 0s linear;
+}
+
+.search-box-hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease-out, visibility 0s linear 0.28s;
 }
 
 .search-box input {
