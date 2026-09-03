@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/adonix",
+      "destination": "https://adonix.hackillinois.org/event/"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
