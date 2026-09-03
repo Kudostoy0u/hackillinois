@@ -1,0 +1,104 @@
+/* Schedule page layout, introduction, and search */
+
+.schedule-main {
+  position: relative;
+  z-index: 10;
+  width: min(1280px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 64px 0 110px;
+  pointer-events: none;
+}
+.search-box,
+.schedule-sidebar,
+.events-section {
+  pointer-events: auto;
+}
+
+.schedule-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 30px;
+  margin: 0 0 36px;
+}
+
+.eyebrow {
+  display: block;
+  color: #087188;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.schedule-intro h1,
+.events-heading h2,
+.credits-card h1,
+.event-modal h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  letter-spacing: -0.04em;
+}
+
+.schedule-intro h1 {
+  max-width: 760px;
+  margin: 8px 0 8px;
+  color: #153e49;
+  font-size: clamp(3.15rem, 7vw, 6.2rem);
+  line-height: 0.92;
+  text-wrap: balance;
+  text-shadow: 0 2px 0 rgb(255 255 255 / 35%);
+}
+
+.schedule-intro p {
+  margin: 0;
+  color: #315760;
+  font-size: 1.05rem;
+}
+
+.search-box {
+  width: min(360px, 100%);
+  height: 52px;
+  padding: 0 15px;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgb(255 255 255 / 65%);
+  border-radius: 16px;
+  background: rgb(255 251 236 / 84%);
+  box-shadow: 0 12px 28px rgb(80 80 41 / 10%);
+  backdrop-filter: blur(14px);
+  color: #56727a;
+}
+
+.search-box input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.search-box input::placeholder {
+  color: #668087;
+}
+
+.search-box button {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(18 128 148 / 10%);
+  color: #35616a;
+  cursor: pointer;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 275px minmax(0, 1fr);
+  align-items: start;
+  gap: 40px;
+}

@@ -139,31 +139,6 @@ export function drawSandcastle(context: CanvasRenderingContext2D, x: number, y: 
   context.restore()
 }
 
-export function drawPebbles(context: CanvasRenderingContext2D, x: number, y: number, scale: number) {
-  const colors = ['#9a876f', '#d9c4a2', '#768887', '#b9795b', '#eee1c3']
-  context.save()
-  context.translate(x, y)
-  context.scale(scale, scale)
-  for (let index = 0; index < 13; index += 1) {
-    const angle = index * 2.37
-    const distance = 5 + (index % 5) * 6
-    context.fillStyle = colors[index % colors.length]
-    context.beginPath()
-    context.ellipse(
-      Math.cos(angle) * distance,
-      Math.sin(angle) * distance * 0.55,
-      2.5 + (index % 3),
-      1.8 + ((index + 1) % 3),
-      angle,
-      0,
-      Math.PI * 2,
-    )
-    context.fill()
-  }
-  context.stroke()
-  context.restore()
-}
-
 export function drawTowel(
   context: CanvasRenderingContext2D,
   x: number,
@@ -366,4 +341,3 @@ export function drawSeagull(
   context.fill()
   context.restore()
 }
-

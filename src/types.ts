@@ -26,8 +26,3 @@ export type Ripple = {
   kind: 'water' | 'sand'
 }
 
-export type DayWaveTransition = {
-  targetDay: string
-  phase: 'cover' | 'reveal'
-}
-

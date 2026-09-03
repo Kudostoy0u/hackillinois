@@ -1,3 +1,5 @@
+import { BEACH_GEOMETRY, getBaseShoreRatio } from './beachGeometry'
+
 export type CrabPoint = { x: number; y: number }
 export type CrabObstacle = CrabPoint & { radius: number }
 
@@ -10,7 +12,7 @@ export function findCrabPath(
 ) {
   const columns = 34
   const rows = 28
-  const horizon = 0.345
+  const horizon = BEACH_GEOMETRY.horizonRatio
   const pointForCell = (column: number, row: number): CrabPoint => ({
     x: column / (columns - 1),
     y: horizon + (row / (rows - 1)) * (1 - horizon),
@@ -19,7 +21,8 @@ export function findCrabPath(
     if (column < 0 || column >= columns || row < 0 || row >= rows) return false
     const point = pointForCell(column, row)
     const coastProgress = (point.y - horizon) / (1 - horizon)
-    const safeCoast = 0.448 - coastProgress * 0.052 + 0.027
+    const safeCoast =
+      getBaseShoreRatio(coastProgress) + BEACH_GEOMETRY.pathClearanceRatio
     if (point.x < safeCoast || point.x > 0.985 || point.y < 0.37 || point.y > 0.975) return false
     return !obstacles.some((obstacle) => {
       const deltaX = (point.x - obstacle.x) * width
@@ -125,4 +128,3 @@ export function findCrabPath(
   }
   return simplified
 }
-

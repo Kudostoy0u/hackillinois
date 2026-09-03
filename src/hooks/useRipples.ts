@@ -1,17 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { getSurfaceAt } from '../components/beach/beachGeometry'
 import type { Ripple } from '../types'
 
-const HORIZON_RATIO = 0.345
-const SHORE_TOP_RATIO = 0.448
-const SHORE_SLOPE = 0.052
-
 function surfaceAt(x: number, y: number): Ripple['kind'] | 'sky' {
-  const horizon = window.innerHeight * HORIZON_RATIO
-  if (y < horizon) return 'sky'
-
-  const progress = (y - horizon) / Math.max(1, window.innerHeight - horizon)
-  const coast = window.innerWidth * (SHORE_TOP_RATIO - progress * SHORE_SLOPE)
-  return x < coast ? 'water' : 'sand'
+  return getSurfaceAt(x, y, window.innerWidth, window.innerHeight)
 }
 
 export function useRipples() {

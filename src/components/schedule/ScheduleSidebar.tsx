@@ -9,7 +9,6 @@ type ScheduleSidebarProps = {
   days: string[]
   requestedDay: string
   selectedCategory: Category | null
-  changingDay: boolean
   eventsCollapsed: boolean
   onChangeDay: (day: string) => void
   onChangeCategory: (category: Category | null) => void
@@ -20,7 +19,6 @@ export function ScheduleSidebar({
   days,
   requestedDay,
   selectedCategory,
-  changingDay,
   eventsCollapsed,
   onChangeDay,
   onChangeCategory,
@@ -59,7 +57,6 @@ export function ScheduleSidebar({
                 aria-selected={requestedDay === day}
                 className={requestedDay === day ? 'active' : ''}
                 key={day}
-                disabled={changingDay}
                 onClick={() => onChangeDay(day)}
               >
                 <span>Day {index + 1}</span>

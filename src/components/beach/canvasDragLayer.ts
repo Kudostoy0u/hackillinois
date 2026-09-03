@@ -1,8 +1,11 @@
+import { getHorizonY } from './beachGeometry'
+
 export type CanvasPoint = { x: number; y: number }
 
 type DragTarget = CanvasPoint & {
   id: string
   radius: number
+  draggable?: boolean
   onMove?: (point: CanvasPoint) => void
   onEnd?: () => void
 }
@@ -23,7 +26,11 @@ export function createCanvasDragLayer() {
     targets
       .slice()
       .reverse()
-      .find((target) => Math.hypot(x - target.x, y - target.y) <= target.radius)
+      .find(
+        (target) =>
+          target.draggable !== false &&
+          Math.hypot(x - target.x, y - target.y) <= target.radius,
+      )
 
   return {
     beginFrame() {
@@ -39,13 +46,23 @@ export function createCanvasDragLayer() {
       targets.push(target)
     },
 
+    getObstacles(width: number, height: number, excludedId: string) {
+      return targets
+        .filter((target) => target.id !== excludedId)
+        .map((target) => ({
+          x: target.x / width,
+          y: target.y / height,
+          radius: target.radius + 36,
+        }))
+    },
+
     isHovering(x: number, y: number) {
       return Boolean(findTarget(x, y))
     },
 
     start(x: number, y: number) {
       const target = findTarget(x, y)
-      if (!target) return false
+      if (!target) return null
 
       activeDrag = {
         target,
@@ -53,16 +70,20 @@ export function createCanvasDragLayer() {
         pointerY: y,
         offset: offsets.get(target.id) ?? { x: 0, y: 0 },
       }
-      return true
+      return target.id
     },
 
     move(x: number, y: number, width: number, height: number) {
-      if (!activeDrag) return false
+      if (!activeDrag) return null
 
       const { target, pointerX, pointerY, offset } = activeDrag
+      const beachHorizon = getHorizonY(height)
       const nextPoint = {
         x: Math.max(target.radius, Math.min(width - target.radius, target.x + x - pointerX)),
-        y: Math.max(target.radius, Math.min(height - target.radius, target.y + y - pointerY)),
+        y: Math.max(
+          beachHorizon + target.radius,
+          Math.min(height - target.radius, target.y + y - pointerY),
+        ),
       }
 
       if (target.onMove) {
@@ -73,14 +94,17 @@ export function createCanvasDragLayer() {
           y: offset.y + nextPoint.y - target.y,
         })
       }
-      return true
+      return target.id
     },
 
     end() {
-      if (!activeDrag) return false
+      if (!activeDrag) return null
+      const draggedId = activeDrag.target.id
       activeDrag.target.onEnd?.()
       activeDrag = null
-      return true
+      return draggedId
     },
   }
 }
+
+export type CanvasDragLayer = ReturnType<typeof createCanvasDragLayer>
