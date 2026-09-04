@@ -17,7 +17,7 @@ import {
   TOWELS,
 } from './sceneLayout'
 
-const CHAIR_COLORS = ['#53a7ba', '#e77a61', '#f1c45c']
+const CHAIR_COLORS = ['#53a7ba', '#e77a61', '#725ac1']
 
 export function drawBeachDecor(
   context: CanvasRenderingContext2D,

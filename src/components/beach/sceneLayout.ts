@@ -161,7 +161,6 @@ export const TOWELS: TowelPlacement[] = [
   { x: 0.64, y: 0.45, width: 17, color: '#e77a63', rotation: -0.18 },
   { x: 0.7, y: 0.4, width: 16, color: '#e1aa45', rotation: 0.13 },
   { x: 0.875, y: 0.54, width: 28, color: '#55a6b8', rotation: 0.31 },
-  { x: 0.98, y: 0.56, width: 20, color: '#e4ad4f', rotation: -0.15 },
   { x: 0.735, y: 0.61, width: 25, color: '#8b70c9', rotation: 0.18 },
   { x: 0.91, y: 0.68, width: 23, color: '#46aa8d', rotation: -0.34 },
   { x: 0.62, y: 0.69, width: 21, color: '#ea7e65', rotation: 0.26 },
